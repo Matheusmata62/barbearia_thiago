@@ -3,13 +3,18 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Sidebar } from '@/app/components/Sidebar'
+import { Button } from '@/app/components/Button'
+import { Card, CardHeader, CardContent } from '@/app/components/Card'
+import { Stat } from '@/app/components/Stat'
+import { Badge } from '@/app/components/Badge'
 
 export default function Dashboard() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
-    // Verificar autenticação
     const auth = localStorage.getItem('isAuthenticated')
     if (!auth) {
       router.push('/login')
@@ -28,152 +33,136 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-gray-900 text-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">✂️</span>
-            <h1 className="text-xl font-bold">Barbearia THG - Admin</h1>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
-          >
-            <span>🚪</span>
-            Sair
-          </button>
-        </div>
-      </header>
+    <div className="flex min-h-screen bg-neutral-50">
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Estatísticas */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Clientes Hoje</p>
-                <p className="text-3xl font-bold text-gray-900">12</p>
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <header className="glass-effect border-b sticky top-0 z-20">
+          <div className="flex items-center justify-between p-4 container-max">
+            <button
+              className="md:hidden p-2 text-neutral-600 hover:bg-neutral-100 rounded-lg"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              {sidebarOpen ? '✕' : '☰'}
+            </button>
+            <h1 className="text-2xl font-bold text-neutral-900 flex-1 md:flex-none">Dashboard</h1>
+            <Button variant="danger" size="sm" onClick={handleLogout}>
+              🚪 Sair
+            </Button>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 p-4 md:p-8 space-y-8">
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Stat label="Clientes Hoje" value="12" icon="👥" trend="up" trendValue="2 novos" />
+            <Stat label="Agendamentos" value="8" icon="📅" trend="up" trendValue="3 pendentes" />
+            <Stat label="Total de Clientes" value="156" icon="📊" trend="up" trendValue="8 este mês" />
+            <Stat label="Receita Hoje" value="R$ 480" icon="💰" trend="up" trendValue="12% vs ontem" />
+          </div>
+
+          {/* Quick Access */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link href="/dashboard/clientes">
+              <Card hover className="cursor-pointer group">
+                <CardHeader 
+                  title="Clientes" 
+                  icon="👥"
+                  description="Gerencie clientes cadastrados"
+                />
+                <CardContent>
+                  <p className="text-3xl font-bold text-amber-600">156</p>
+                  <p className="text-sm text-neutral-600 mt-2 group-hover:text-neutral-900">
+                    Clique para gerenciar →
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/dashboard/agendamentos">
+              <Card hover className="cursor-pointer group">
+                <CardHeader 
+                  title="Agendamentos" 
+                  icon="📅"
+                  description="Visualize horários marcados"
+                />
+                <CardContent>
+                  <p className="text-3xl font-bold text-amber-600">8</p>
+                  <p className="text-sm text-neutral-600 mt-2 group-hover:text-neutral-900">
+                    3 pendentes de confirmação
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/dashboard/configuracoes">
+              <Card hover className="cursor-pointer group">
+                <CardHeader 
+                  title="Configurações" 
+                  icon="⚙️"
+                  description="Configure seu negócio"
+                />
+                <CardContent>
+                  <div className="flex gap-2 flex-wrap mt-2">
+                    <Badge variant="success">Ativo</Badge>
+                    <Badge variant="info">Completo</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+
+          {/* Próximos Agendamentos */}
+          <Card>
+            <CardHeader 
+              title="Próximos Agendamentos" 
+              icon="📋"
+              description="Seus agendamentos confirmados de hoje"
+            />
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="border-b border-neutral-200">
+                    <tr>
+                      <th className="text-left py-3 px-4 font-semibold text-neutral-600">Horário</th>
+                      <th className="text-left py-3 px-4 font-semibold text-neutral-600">Cliente</th>
+                      <th className="text-left py-3 px-4 font-semibold text-neutral-600">Serviço</th>
+                      <th className="text-left py-3 px-4 font-semibold text-neutral-600">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-neutral-200">
+                    <tr className="hover:bg-neutral-50 transition">
+                      <td className="py-3 px-4">14:00</td>
+                      <td className="py-3 px-4 font-medium">João Silva</td>
+                      <td className="py-3 px-4">Corte + Barba</td>
+                      <td className="py-3 px-4">
+                        <Badge variant="success">Confirmado</Badge>
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-neutral-50 transition">
+                      <td className="py-3 px-4">15:00</td>
+                      <td className="py-3 px-4 font-medium">Pedro Santos</td>
+                      <td className="py-3 px-4">Corte</td>
+                      <td className="py-3 px-4">
+                        <Badge variant="warning">Pendente</Badge>
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-neutral-50 transition">
+                      <td className="py-3 px-4">16:30</td>
+                      <td className="py-3 px-4 font-medium">Carlos Oliveira</td>
+                      <td className="py-3 px-4">Barba</td>
+                      <td className="py-3 px-4">
+                        <Badge variant="success">Confirmado</Badge>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <span className="text-4xl">👥</span>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Agendamentos</p>
-                <p className="text-3xl font-bold text-gray-900">8</p>
-              </div>
-              <span className="text-4xl">📅</span>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Total Clientes</p>
-                <p className="text-3xl font-bold text-gray-900">156</p>
-              </div>
-              <span className="text-4xl">📊</span>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Receita Hoje</p>
-                <p className="text-3xl font-bold text-gray-900">R$ 480</p>
-              </div>
-              <span className="text-4xl">💰</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Menu Principal */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <Link 
-            href="/dashboard/clientes"
-            className="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group"
-          >
-            <span className="text-5xl mb-4 inline-block group-hover:scale-110 transition">👥</span>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Clientes</h2>
-            <p className="text-gray-600">
-              Gerencie todos os clientes cadastrados
-            </p>
-          </Link>
-
-          <Link 
-            href="/dashboard/agendamentos"
-            className="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group"
-          >
-            <span className="text-5xl mb-4 inline-block group-hover:scale-110 transition">📅</span>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Agendamentos</h2>
-            <p className="text-gray-600">
-              Visualize e gerencie agendamentos
-            </p>
-          </Link>
-
-          <Link 
-            href="/dashboard/configuracoes"
-            className="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group"
-          >
-            <span className="text-5xl mb-4 inline-block group-hover:scale-110 transition">⚙️</span>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Configurações</h2>
-            <p className="text-gray-600">
-              Configure nome, horários e serviços
-            </p>
-          </Link>
-        </div>
-
-        {/* Últimos Agendamentos */}
-        <div className="mt-8 bg-white rounded-lg shadow p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Próximos Agendamentos</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 text-gray-600">Horário</th>
-                  <th className="text-left py-3 px-4 text-gray-600">Cliente</th>
-                  <th className="text-left py-3 px-4 text-gray-600">Serviço</th>
-                  <th className="text-left py-3 px-4 text-gray-600">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b hover:bg-gray-50">
-                  <td className="py-3 px-4">14:00</td>
-                  <td className="py-3 px-4">João Silva</td>
-                  <td className="py-3 px-4">Corte + Barba</td>
-                  <td className="py-3 px-4">
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
-                      Confirmado
-                    </span>
-                  </td>
-                </tr>
-                <tr className="border-b hover:bg-gray-50">
-                  <td className="py-3 px-4">15:00</td>
-                  <td className="py-3 px-4">Pedro Santos</td>
-                  <td className="py-3 px-4">Corte</td>
-                  <td className="py-3 px-4">
-                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">
-                      Pendente
-                    </span>
-                  </td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="py-3 px-4">16:30</td>
-                  <td className="py-3 px-4">Carlos Oliveira</td>
-                  <td className="py-3 px-4">Barba</td>
-                  <td className="py-3 px-4">
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
-                      Confirmado
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+            </CardContent>
+          </Card>
+        </main>
       </div>
     </div>
   )
