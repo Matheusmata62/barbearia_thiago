@@ -211,25 +211,181 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white py-12 border-t border-neutral-100">
+      {/* Depoimentos Section */}
+      <section className="py-24 bg-gradient-to-b from-white to-neutral-50">
         <div className="container-max">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <span className="text-2xl">✂️</span>
-              <span className="font-bold text-neutral-900">Barbearia THG</span>
-            </Link>
-            <p className="text-neutral-500 text-sm">
-              © 2026 Todos os direitos reservados.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 hover:bg-amber-500 hover:text-white transition-all duration-300 transform hover:scale-110">
-                📸
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 hover:bg-amber-500 hover:text-white transition-all duration-300 transform hover:scale-110">
-                📱
-              </a>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">Nossos Clientes Aprovam</h2>
+            <p className="text-neutral-500 text-lg">Confira o que dizem sobre nossos serviços</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { name: 'Carlos Santos', role: 'Empresário', text: 'Excelente atendimento! Voltei mais confiante para minhas reuniões.', rating: 5 },
+              { name: 'João Pereira', role: 'Estudante', text: 'Melhor corte que já tive! Os caras conhecem de verdade.', rating: 5 },
+              { name: 'Pedro Costa', role: 'Advogado', text: 'Profissionalismo impecável. Recomendo para todos!', rating: 5 }
+            ].map((review, idx) => (
+              <div key={idx} className="bg-white rounded-2xl p-8 border border-neutral-200 hover:border-amber-300 transition-all duration-300 hover:shadow-xl group">
+                <div className="flex items-center gap-2 mb-4">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <span key={i} className="text-amber-400 text-lg">⭐</span>
+                  ))}
+                </div>
+                <p className="text-neutral-600 mb-6 italic">"{review.text}"</p>
+                <div className="pt-6 border-t border-neutral-100">
+                  <p className="font-bold text-neutral-900">{review.name}</p>
+                  <p className="text-sm text-amber-600">{review.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Estatísticas Section */}
+      <section className="py-16 bg-neutral-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
+        
+        <div className="container-max relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: '500+', label: 'Clientes Satisfeitos' },
+              { value: '10+', label: 'Anos de Experiência' },
+              { value: '4.9', label: 'Avaliação Média' },
+              { value: '99%', label: 'Taxa de Retorno' }
+            ].map((stat, idx) => (
+              <div key={idx} className="text-center">
+                <p className="text-3xl md:text-4xl font-bold gradient-text mb-2">{stat.value}</p>
+                <p className="text-neutral-400 text-sm md:text-base">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Galeria Section */}
+      <section className="py-24 bg-white">
+        <div className="container-max">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">Galeria de Trabalhos</h2>
+            <p className="text-neutral-500 text-lg">Veja alguns de nossos trabalhos em destaque</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+              <div 
+                key={item} 
+                className="group relative overflow-hidden rounded-xl aspect-square bg-gradient-to-br from-amber-400 to-amber-600 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg"
+              >
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                  <span className="text-white text-4xl opacity-0 group-hover:opacity-100 transition-all">✂️</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Diferenciais Section */}
+      <section className="py-24 bg-gradient-to-b from-neutral-50 to-white">
+        <div className="container-max">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">Por que Nos Escolher</h2>
+            <p className="text-neutral-500 text-lg">Diferenciais que fazem a diferença</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              { icon: '🏆', title: 'Profissionais Certificados', desc: 'Equipe treinada e atualizada com as melhores técnicas internacionais.' },
+              { icon: '🛠️', title: 'Equipamentos Premium', desc: 'Utilizamos os melhores produtos e ferramentas do mercado.' },
+              { icon: '👥', title: 'Atendimento Personalizado', desc: 'Cada cliente é único. Oferecemos consultoria individual.' },
+              { icon: '💎', title: 'Ambiente Aconchegante', desc: 'Espaço moderno, limpo e pensado para seu conforto.' },
+              { icon: '⏱️', title: 'Agendamento Flexível', desc: 'Horários que se adaptam à sua rotina.' },
+              { icon: '💰', title: 'Melhor Custo-Benefício', desc: 'Qualidade premium com preços justos.' }
+            ].map((item, idx) => (
+              <div key={idx} className="flex gap-4 p-6 rounded-xl border border-neutral-200 hover:border-amber-300 hover:bg-amber-50/30 transition-all duration-300">
+                <span className="text-4xl flex-shrink-0">{item.icon}</span>
+                <div>
+                  <h3 className="font-bold text-neutral-900 mb-2">{item.title}</h3>
+                  <p className="text-neutral-600 text-sm">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Final Section */}
+      <section className="py-16 bg-gradient-to-r from-amber-500 to-amber-600 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+        </div>
+
+        <div className="container-max relative z-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Pronto para uma Transformação?</h2>
+          <p className="text-amber-50 text-lg mb-8 max-w-2xl mx-auto">Marque seu horário agora e experimente o atendimento premium da Barbearia THG</p>
+          <a 
+            href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20agendar%20um%20horário!"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-8 py-4 bg-white text-amber-600 rounded-xl font-bold text-lg hover:bg-amber-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            Agendar Agora ✂️
+          </a>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-neutral-900 py-16 border-t border-neutral-800">
+        <div className="container-max">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div>
+              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity mb-4">
+                <span className="text-3xl">✂️</span>
+                <span className="font-bold text-white">Barbearia THG</span>
+              </Link>
+              <p className="text-neutral-400 text-sm">Experiência premium em barbearia desde 2016.</p>
             </div>
+            
+            <div>
+              <h4 className="font-bold text-white mb-4">Navegação</h4>
+              <ul className="space-y-2">
+                <li><a href="#inicio" className="text-neutral-400 hover:text-amber-400 transition-colors">Início</a></li>
+                <li><a href="#servicos" className="text-neutral-400 hover:text-amber-400 transition-colors">Serviços</a></li>
+                <li><a href="#contato" className="text-neutral-400 hover:text-amber-400 transition-colors">Contato</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-white mb-4">Contato</h4>
+              <ul className="space-y-2">
+                <li className="text-neutral-400 text-sm">📱 (11) 99999-9999</li>
+                <li className="text-neutral-400 text-sm">📧 contato@thg.com</li>
+                <li className="text-neutral-400 text-sm">📍 Rua das Acácias, 123</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-white mb-4">Redes Sociais</h4>
+              <div className="flex gap-4">
+                <a href="#" className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-white transition-all duration-300 transform hover:scale-110">
+                  📸
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-white transition-all duration-300 transform hover:scale-110">
+                  📱
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-white transition-all duration-300 transform hover:scale-110">
+                  💬
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-neutral-800 pt-8">
+            <p className="text-neutral-500 text-center text-sm">
+              © 2026 Barbearia THG. Todos os direitos reservados. | Desenvolvido com ❤️
+            </p>
           </div>
         </div>
       </footer>
