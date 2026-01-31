@@ -18,7 +18,10 @@ export default function Login() {
     // Simulating network delay for effect
     await new Promise(resolve => setTimeout(resolve, 800))
 
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
+    const username = credentials.username.trim()
+    const password = credentials.password.trim()
+
+    if (username === 'admin' && password === 'admin123') {
       localStorage.setItem('isAuthenticated', 'true')
       router.push('/dashboard')
     } else {
